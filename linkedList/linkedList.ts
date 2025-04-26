@@ -3,6 +3,15 @@ export class Node<T> {
   constructor(public value: T) {}
 }
 
+export class ListNode<T = null> {
+  val: T
+  next: ListNode<T> | null = null
+  constructor(val: T, next: ListNode<T> | null = null) {
+    this.val = val
+    this.next = next
+  }
+}
+
 export class LinkedList<T> {
   head: Node<T> | null = null
   size: number = 0
