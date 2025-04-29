@@ -20,8 +20,14 @@ export class TreeNode<T> {
   }
 }
 
+interface IComparator<T> {
+  (c1: T, c2: T): number
+}
+
 export class BSTree<T> {
   private root: TreeNode<T> | null = null
+
+  constructor(private comparator: IComparator<T> | null = null) {}
 
   insert(value: T) {
     const newNode = new TreeNode(value)
@@ -310,7 +316,9 @@ export class BSTree<T> {
   }
 }
 
-const bts = new BSTree<number>()
+const bts = new BSTree<number>((c1,c2)=>{
+  return c1 - c2
+})
 bts.insert(11)
 bts.insert(7)
 bts.insert(15)

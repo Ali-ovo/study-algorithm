@@ -1,26 +1,15 @@
-export class Node<T> {
-  next: Node<T> | null = null
-  constructor(public value: T) {}
-}
-
-export class ListNode<T = null> {
-  val: T
-  next: ListNode<T> | null = null
-  constructor(val: T, next: ListNode<T> | null = null) {
-    this.val = val
-    this.next = next
-  }
-}
+import { Node } from '.'
 
 export class LinkedList<T> {
-  head: Node<T> | null = null
-  size: number = 0
+  protected head: Node<T> | null = null
+  protected size: number = 0
+  protected tail: Node<T> | null = null
 
   get length() {
     return this.size
   }
 
-  private getNode(index: number): Node<T> | null {
+  protected getNode(index: number): Node<T> | null {
     let current = this.head
     for (let i = 0; i < index; i++) {
       current = current!.next
@@ -28,26 +17,39 @@ export class LinkedList<T> {
     return current
   }
 
+  private isTail(node: Node<T>) {
+    return this.tail === node
+  }
+
   append(value: T) {
     const newNode = new Node(value)
     if (!this.head) {
       this.head = newNode
     } else {
-      let current = this.head
-      while (current.next) {
-        current = current.next
-      }
-      current.next = newNode
+      this.tail!.next = newNode
     }
+    this.tail = newNode
     this.size++
   }
 
   traverse() {
+    const values: T[] = []
     let current = this.head
     while (current) {
-      console.log(current.value)
-      current = current.next
+      values.push(current.value)
+
+      if (this.isTail(current)) {
+        current = null
+      } else {
+        current = current.next
+      }
     }
+
+    if (this.head && this.tail?.next === this.head) {
+      values.push(this.head?.value!)
+    }
+
+    console.log(values.join(' -> '))
   }
 
   insert(value: T, index: number) {
@@ -63,26 +65,41 @@ export class LinkedList<T> {
       const pre = this.getNode(index - 1)
       newNode.next = pre?.next ?? null
       pre!.next = newNode
+
+      if (index === this.length) {
+        this.tail = newNode
+      }
     }
     this.size++
+
+    return true
   }
 
   removeAt(index: number) {
     if (index < 0 || index >= this.size) {
-      throw new Error('Index out of bounds')
+      return null
     }
 
     let current = this.head
     if (index === 0) {
       this.head = current!.next
+
+      if (this.length === 1) {
+        this.tail = null
+      }
     } else {
       const pre = this.getNode(index - 1)
+      current = pre?.next ?? null
       pre!.next = pre?.next?.next ?? null
+
+      if (index === this.length - 1) {
+        this.tail = pre
+      }
     }
 
     this.size--
 
-    return current?.value ?? null
+    return current?.value! ?? null
   }
 
   get(index: number) {
@@ -113,7 +130,12 @@ export class LinkedList<T> {
       if (current.value === value) {
         return index
       }
-      current = current.next
+
+      if (this.isTail(current)) {
+        current = null
+      } else {
+        current = current.next
+      }
       index++
     }
     return -1
@@ -138,16 +160,16 @@ export class LinkedList<T> {
   }
 }
 
-const list = new LinkedList<number>()
-list.append(1)
-list.append(2)
-list.append(3)
-list.append(4)
-list.insert(999, 1)
-list.removeAt(1)
+// const list = new LinkedList<number>()
+// list.append(1)
+// list.append(2)
+// list.append(3)
+// list.append(4)
+// list.insert(999, 1)
+// list.removeAt(1)
 
-console.log('get', list.get(1)) // 2
+// console.log('get', list.get(1)) // 2
 
-console.log('update', list.update(100, 1)) // true
-console.log('indexOf', list.indexOf(100)) // 1
-list.traverse()
+// console.log('update', list.update(100, 1)) // true
+// console.log('indexOf', list.indexOf(100)) // 1
+// list.traverse()
