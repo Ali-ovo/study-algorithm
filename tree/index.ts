@@ -316,24 +316,24 @@ export class BSTree<T> {
   }
 }
 
-const bts = new BSTree<number>((c1,c2)=>{
-  return c1 - c2
-})
-bts.insert(11)
-bts.insert(7)
-bts.insert(15)
-bts.insert(5)
-bts.insert(3)
-bts.insert(9)
-bts.insert(8)
-bts.insert(10)
-bts.insert(13)
-bts.insert(12)
-bts.insert(14)
-bts.insert(20)
-bts.insert(18)
-bts.insert(25)
-bts.insert(6)
-bts.remove(15)
+// const bts = new BSTree<number>((c1,c2)=>{
+//   return c1 - c2
+// })
+// bts.insert(11)
+// bts.insert(7)
+// bts.insert(15)
+// bts.insert(5)
+// bts.insert(3)
+// bts.insert(9)
+// bts.insert(8)
+// bts.insert(10)
+// bts.insert(13)
+// bts.insert(12)
+// bts.insert(14)
+// bts.insert(20)
+// bts.insert(18)
+// bts.insert(25)
+// bts.insert(6)
+// bts.remove(15)
 
-bts.print()
+// bts.print()
